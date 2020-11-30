@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="@dimen/listing_card_margin_vertical"
+    app:cardElevation="@dimen/listing_card_elevation">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rental_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp">
+
+        <ImageView
+            android:id="@+id/primary_image"
+            android:layout_width="@dimen/listing_image_width"
+            android:layout_height="@dimen/listing_image_height"
+            android:layout_marginVertical="8dp"
+            android:background="@android:color/darker_gray"
+            android:contentDescription="@string/listing_image_content_description"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/name"
+            style="?android:attr/textAppearanceMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="@dimen/margin_small"
+            android:textIsSelectable="true"
+            android:textSize="@dimen/listing_item_name_text_size"
+            app:layout_constraintBottom_toBottomOf="@id/primary_image"
+            app:layout_constraintLeft_toRightOf="@id/primary_image"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/primary_image"
+            tools:text="@string/sample_name" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

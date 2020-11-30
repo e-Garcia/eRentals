@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">eRentals</string>
+    <string name="listing_image_content_description">Listing image preview</string>
+    <string name="error_message_generic">Oops! looks like something went wrong. Please try again later.</string>
+    \
+    <string name="retry">retry</string>
+    <string name="search_title">Search</string>
+
+    <!-- Sample design preview data -->
+    <string name="sample_name">2020 Forest River Forester</string>
+    <string name="search_hint">Search rentals</string>
+</resources>

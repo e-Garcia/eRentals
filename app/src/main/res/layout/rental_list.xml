@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rental_list"
+    android:name="com.egarcia.assignment.HouseListFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".rentals.view.ui.RentalListActivity"
+    tools:listitem="@layout/listing_list_item" />
