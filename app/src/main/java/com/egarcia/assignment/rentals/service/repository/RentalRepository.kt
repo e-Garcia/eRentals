@@ -1,41 +1,15 @@
 package com.egarcia.assignment.rentals.service.repository
 
-import androidx.lifecycle.MutableLiveData
-import com.egarcia.assignment.rentals.service.model.NetworkRental
 import com.egarcia.assignment.rentals.service.model.RentalsResponse
-import com.egarcia.assignment.utils.BASE_URL
 import retrofit2.Callback
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Contains the implementation details for retrieving Rentals from the network.
  */
-class RentalRepository private constructor() {
-
-    private val rentalApi: RentalApi
-    private val mutableLiveNetworkRentalList: MutableLiveData<Result<List<NetworkRental>>>
-
-    companion object {
-        private lateinit var rentalRepository: RentalRepository
-
-        fun getInstance(): RentalRepository {
-            if (!::rentalRepository.isInitialized) {
-                rentalRepository = RentalRepository()
-            }
-            return rentalRepository
-        }
-    }
-
-    init {
-        val retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-
-        rentalApi = retrofit.create(RentalApi::class.java)
-        mutableLiveNetworkRentalList = MutableLiveData()
-    }
+@Singleton
+class RentalRepository @Inject constructor(private val rentalApi: RentalApi) {
 
     fun getListings(filter: String = "", start: Int, count: Int, callback: Callback<RentalsResponse>) {
         rentalApi.getListings(filter, start, count).enqueue(callback)

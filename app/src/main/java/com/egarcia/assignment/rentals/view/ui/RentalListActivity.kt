@@ -6,7 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
-import androidx.lifecycle.ViewModelProviders
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.egarcia.assignment.R
@@ -16,15 +16,17 @@ import com.egarcia.assignment.rentals.viewmodel.ListingViewModel
 import com.egarcia.assignment.utils.ProgressStatus
 import com.egarcia.assignment.view.BaseActivity
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.rental_list.*
 
 /**
  * Displays a list of Listings
  */
+@AndroidEntryPoint
 class RentalListActivity : BaseActivity(), androidx.appcompat.widget.SearchView.OnQueryTextListener {
 
     //region Member variables
-    private lateinit var viewModel: ListingViewModel
+    private val viewModel: ListingViewModel by viewModels()
     private lateinit var adapter: RentalAdapter
     private lateinit var binding: ActivityRentalListBinding
     private lateinit var snackbar: Snackbar
@@ -39,7 +41,6 @@ class RentalListActivity : BaseActivity(), androidx.appcompat.widget.SearchView.
         setSupportActionBar(binding.toolbar)
         binding.toolbar.title = title
 
-        viewModel = ViewModelProviders.of(this).get(ListingViewModel::class.java)
         setupRecyclerView(binding.listLayout.rentalList)
         snackbar = Snackbar.make(binding.coordinator,
                 R.string.error_message_generic, Snackbar.LENGTH_INDEFINITE)
@@ -120,5 +121,4 @@ class RentalListActivity : BaseActivity(), androidx.appcompat.widget.SearchView.
         return true
     }
     //endregion
-
 }

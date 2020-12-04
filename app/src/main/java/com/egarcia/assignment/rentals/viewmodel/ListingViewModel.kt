@@ -1,25 +1,32 @@
 package com.egarcia.assignment.rentals.viewmodel
 
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.egarcia.assignment.rentals.service.model.NetworkRental
 import com.egarcia.assignment.rentals.service.repository.RentalDataSource
 import com.egarcia.assignment.rentals.service.repository.RentalDataSourceFactory
+import com.egarcia.assignment.rentals.service.repository.RentalRepository
 import com.egarcia.assignment.utils.PAGE_SIZE
 import com.egarcia.assignment.utils.ProgressStatus
 
 /**
  * A collection of Listings
  */
-class ListingViewModel : BaseViewModel() {
+class ListingViewModel @ViewModelInject constructor(
+        private val rentalRepository: RentalRepository,
+        @Assisted private val savedStateHandle: SavedStateHandle
+) : BaseViewModel() {
 
     private var listings: LiveData<PagedList<NetworkRental>>
     private var loadingStatus: LiveData<ProgressStatus>
     private val queryKeywords = MutableLiveData("")
-    private var factory: RentalDataSourceFactory = RentalDataSourceFactory()
+    private var factory: RentalDataSourceFactory = RentalDataSourceFactory(rentalRepository = rentalRepository)
     private val config = PagedList.Config.Builder()
             .setInitialLoadSizeHint(PAGE_SIZE)
             .setPageSize(PAGE_SIZE)
@@ -31,7 +38,7 @@ class ListingViewModel : BaseViewModel() {
             if (it.isEmpty()) {
                 LivePagedListBuilder(factory, config).setInitialLoadKey(0).build()
             } else {
-                LivePagedListBuilder(RentalDataSourceFactory(it), config).build()
+                LivePagedListBuilder(RentalDataSourceFactory(it, rentalRepository), config).build()
             }
         }
     }
