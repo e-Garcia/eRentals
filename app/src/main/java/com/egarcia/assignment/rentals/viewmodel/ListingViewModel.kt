@@ -3,54 +3,56 @@ package com.egarcia.assignment.rentals.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.egarcia.assignment.rentals.service.model.NetworkRental
 import com.egarcia.assignment.rentals.service.repository.RentalDataSource
 import com.egarcia.assignment.rentals.service.repository.RentalDataSourceFactory
-
-
-const val PAGE_SIZE = 5
+import com.egarcia.assignment.utils.PAGE_SIZE
+import com.egarcia.assignment.utils.ProgressStatus
 
 /**
  * A collection of Listings
  */
 class ListingViewModel : BaseViewModel() {
 
-    private val mListings: LiveData<PagedList<NetworkRental>>
-    private var mLoadingStatus: LiveData<String>
-    private val mFactory: RentalDataSourceFactory
+    private var listings: LiveData<PagedList<NetworkRental>>
+    private var loadingStatus: LiveData<ProgressStatus>
+    private val queryKeywords = MutableLiveData("")
+    private var factory: RentalDataSourceFactory = RentalDataSourceFactory()
+    private val config = PagedList.Config.Builder()
+            .setInitialLoadSizeHint(PAGE_SIZE)
+            .setPageSize(PAGE_SIZE)
+            .build()
 
     init {
-        val config = PagedList.Config.Builder()
-                .setInitialLoadSizeHint(PAGE_SIZE)
-                .setPageSize(PAGE_SIZE)
-                .build()
-
-        mFactory = RentalDataSourceFactory()
-        mLoadingStatus = Transformations.switchMap(mFactory.mDataSource, ::loadNetworkState)
-        mListings = listBuilder(config, mFactory).build()
+        loadingStatus = Transformations.switchMap(factory.dataSource, ::loadNetworkState)
+        listings = Transformations.switchMap(queryKeywords) {
+            if (it.isEmpty()) {
+                LivePagedListBuilder(factory, config).setInitialLoadKey(0).build()
+            } else {
+                LivePagedListBuilder(RentalDataSourceFactory(it), config).build()
+            }
+        }
     }
 
     fun refresh() {
-        mFactory.mDataSource.value?.invalidate()
+        factory.dataSource.value?.invalidate()
+    }
+
+    fun search(keywords: String) {
+        queryKeywords.value = keywords
     }
 
     fun paginatedListings(): LiveData<PagedList<NetworkRental>> {
-        return mListings
+        return listings
     }
 
-    fun loadingStatus(): LiveData<String> {
-        return mLoadingStatus
+    fun loadingStatus(): LiveData<ProgressStatus> {
+        return loadingStatus
     }
 
-    private fun listBuilder(config: PagedList.Config, dataSourceFactory: DataSource.Factory<Int, NetworkRental>)
-            : LivePagedListBuilder<Int, NetworkRental> {
-        return LivePagedListBuilder<Int, NetworkRental>(dataSourceFactory, config).setInitialLoadKey(0)
-    }
-
-    private fun loadNetworkState(dataSource: RentalDataSource): MutableLiveData<String> {
+    private fun loadNetworkState(dataSource: RentalDataSource): MutableLiveData<ProgressStatus> {
         return dataSource.progressStatus()
     }
 

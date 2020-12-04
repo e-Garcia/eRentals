@@ -29,7 +29,8 @@ class RentalAdapter : PagedListAdapter<NetworkRental, RentalAdapter.ViewHolder>(
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(networkRental: NetworkRental) {
             itemView.name.text = networkRental.attributes.name
-            Picasso.with(itemView.context).load(networkRental.attributes.primaryImageUrl).into(itemView.primary_image)
+            Picasso.with(itemView.context).load(networkRental.attributes.primaryImageUrl)
+                    .fit().centerCrop().into(itemView.primary_image)
         }
     }
 }

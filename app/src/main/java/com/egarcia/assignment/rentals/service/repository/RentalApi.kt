@@ -14,13 +14,7 @@ interface RentalApi {
      * Get the list of rental listings from the API
      */
     @GET("/rentals")
-    fun getListings(@Query("offset") start: Int,
-                    @Query("limit") count: Int): Call<RentalsResponse>
-
-    /**
-     * Get the list of unit listings from the API
-     */
-    @GET("/rentals")
-    fun getAllListings(): Call<RentalsResponse>
-
+    fun getListings(@Query("filter[keywords]") keywords: String,
+                    @Query("page[offset]") start: Int,
+                    @Query("page[limit]") count: Int): Call<RentalsResponse>
 }

@@ -4,13 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import com.egarcia.assignment.rentals.service.model.NetworkRental
 
-class RentalDataSourceFactory : DataSource.Factory<Int, NetworkRental>() {
+class RentalDataSourceFactory(private val query: String = "")
+    : DataSource.Factory<Int, NetworkRental>() {
 
-    val mDataSource = MutableLiveData<RentalDataSource>()
+    val dataSource = MutableLiveData<RentalDataSource>()
 
     override fun create(): DataSource<Int, NetworkRental> {
-        val dataSource = RentalDataSource()
-        mDataSource.postValue(dataSource)
+        val dataSource = RentalDataSource(query, RentalRepository.getInstance())
+        this.dataSource.postValue(dataSource)
         return dataSource
     }
 }

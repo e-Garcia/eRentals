@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 /**
  * Contains the implementation details for retrieving Rentals from the network.
  */
-class RentalRepository {
+class RentalRepository private constructor() {
 
     private val rentalApi: RentalApi
     private val mutableLiveNetworkRentalList: MutableLiveData<Result<List<NetworkRental>>>
@@ -37,8 +37,8 @@ class RentalRepository {
         mutableLiveNetworkRentalList = MutableLiveData()
     }
 
-    fun getListings(start: Int, count: Int, callback: Callback<RentalsResponse>) {
-        rentalApi.getListings(start, count).enqueue(callback)
+    fun getListings(filter: String = "", start: Int, count: Int, callback: Callback<RentalsResponse>) {
+        rentalApi.getListings(filter, start, count).enqueue(callback)
     }
 
 }
