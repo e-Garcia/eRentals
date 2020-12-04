@@ -12,3 +12,17 @@ data class RentalsResponse(
         @SerializedName("data")
         val data: List<NetworkRental>
 )
+
+fun RentalsResponse.isValidResponse(): Boolean {
+    return if (data.isEmpty()) {
+        true
+    } else {
+        var areContentsValid = true
+        data.forEach {
+            if (it.isValidResponse().not()) {
+                areContentsValid = false
+            }
+        }
+        areContentsValid
+    }
+}

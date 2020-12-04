@@ -14,3 +14,7 @@ data class NetworkRental(
         @SerializedName("attributes")
         val attributes: NetworkRentalAttributes
 )
+
+fun NetworkRental.isValidResponse(): Boolean {
+    return id.isNotBlank() && attributes.isValidResponse()
+}
