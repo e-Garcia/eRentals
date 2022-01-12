@@ -1,7 +1,5 @@
 package com.egarcia.assignment.rentals.viewmodel
 
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -14,13 +12,16 @@ import com.egarcia.assignment.rentals.service.repository.RentalDataSourceFactory
 import com.egarcia.assignment.rentals.service.repository.RentalRepository
 import com.egarcia.assignment.utils.PAGE_SIZE
 import com.egarcia.assignment.utils.ProgressStatus
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 /**
  * A collection of Listings
  */
-class ListingViewModel @ViewModelInject constructor(
+@HiltViewModel
+class ListingViewModel @Inject constructor(
         private val rentalRepository: RentalRepository,
-        @Assisted private val savedStateHandle: SavedStateHandle
+        private val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
     private var listings: LiveData<PagedList<NetworkRental>>
