@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
+import android.widget.ProgressBar
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +18,6 @@ import com.egarcia.assignment.utils.ProgressStatus
 import com.egarcia.assignment.view.BaseActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.rental_list.*
 
 /**
  * Displays a list of Listings
@@ -30,6 +30,7 @@ class RentalListActivity : BaseActivity(), androidx.appcompat.widget.SearchView.
     private lateinit var adapter: RentalAdapter
     private lateinit var binding: ActivityRentalListBinding
     private lateinit var snackbar: Snackbar
+    private lateinit var progressBar: ProgressBar
     //endregion
 
     //region Lifecycle
@@ -42,6 +43,7 @@ class RentalListActivity : BaseActivity(), androidx.appcompat.widget.SearchView.
         binding.toolbar.title = title
 
         setupRecyclerView(binding.listLayout.rentalList)
+        progressBar = binding.listLayout.progressBar
         snackbar = Snackbar.make(binding.coordinator,
                 R.string.error_message_generic, Snackbar.LENGTH_INDEFINITE)
         snackbar.setAction(R.string.retry) { viewModel.refresh() }
